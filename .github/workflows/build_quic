@@ -1,0 +1,48 @@
+name: Build and Release Sing-box Minimal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      max-parallel: 1
+      matrix:
+        goarch: [amd64]
+    steps:
+      - name: Get Latest Stable Tag
+        id: get_tag
+        run: |
+          LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+          echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+
+      - name: Checkout Source
+        uses: actions/checkout@v4
+        with:
+          repository: SagerNet/sing-box
+          ref: ${{ steps.get_tag.outputs.tag }}
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 'stable'
+
+      - name: Build and Optimize
+        run: |
+          cd cmd/sing-box
+          CGO_ENABLED=0 GOOS=linux GOARCH=${{ matrix.goarch }} go build -v \
+            -trimpath \
+            -tags with_quic \
+            -ldflags "-s -w -buildid= -extldflags '-static'" \
+            -o ../../sing-box-linux-amd64-tuic
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_tag.outputs.tag }}
+          files: sing-box-linux-amd64-tuic
+          draft: false
+          prerelease: false
