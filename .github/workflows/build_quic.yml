@@ -1,4 +1,4 @@
-name: Build and Release Sing-box Minimal
+name: Build and Release Sing-box Minimal With Quic
 
 on:
   workflow_dispatch:
