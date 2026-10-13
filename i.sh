@@ -53,7 +53,7 @@ fi
 mkdir -p ${CONFIG_PATH}
 
 cat <<EOF > ${CONFIG_FILE}
-{"log":{"disabled":true},"inbounds":[{"type":"vless","listen":"::","listen_port":${PORT},"users":[{"uuid":"${UUID}"}],"transport":{"type":"ws"}}],"outbounds":[{"type":"direct"}]}
+{"log":{"disabled":true},"inbounds":[{"type":"vmess","listen":"::","listen_port":${PORT},"users":[{"uuid":"${UUID}"}],"transport":{"type":"ws"}}],"outbounds":[{"type":"direct"}]}
 EOF
 
 cat << 'EOF' > ${INIT_FILE}
@@ -79,7 +79,7 @@ echo ""
 echo "🎉 sing-box 部署完成！"
 echo ""
 echo "🚀节点链接："
-echo "vless://${UUID}@${IP}:${PORT}?type=ws&host=gw.alicdn.com#${LOC}"
+echo "vmess://${UUID}@${IP}:${PORT}?type=ws&host=gw.alicdn.com#${LOC}"
 
 echo ""
 echo ""
