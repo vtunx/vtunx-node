@@ -31,9 +31,9 @@ wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | sh
 docker run -d --restart unless-stopped \
   -e TPORT=你的端口 -e TUUID=你的uuid \
   -e THOST=你的域名 -e TTOKEN=你的token \
-  ghcr.io/vtunx/vtunx-node:1.9.7
+  ghcr.io/vtunx/vtunx-node:1.1.7
 ```
 
 不传 `-e` 即随机端口/uuid 模式。隧道节点链接：`vmess://<UUID>@<你的域名>:443?type=ws&security=tls#节点名`。
 
-内置 sing-box 1.9.7 与 cloudflared，启动不联网下载；版本升级需改 `Dockerfile`/`i.sh` 中的标签。
+内置 sing-box 1.1.7 与 cloudflared，启动不联网下载；版本升级需改 `Dockerfile`/`i.sh` 中的标签。

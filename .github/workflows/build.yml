@@ -17,13 +17,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: v1.9.7
+          ref: v1.1.7
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          # 1.9.7 用新 Go 链接会报 net.errNoSuchInterface，必须固定 1.21
-          go-version: '1.21.13'
+          # 1.1.7 用新 Go 编译能过但运行时 panic（can't disable invalidptr），必须固定 1.19
+          go-version: '1.19.13'
 
       - name: Build and Optimize
         run: |
@@ -40,7 +40,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.9.7
+          tag_name: v1.1.7
           files: sing-box-linux-${{ matrix.goarch }}.tar.xz
           draft: false
           prerelease: false
