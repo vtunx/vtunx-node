@@ -141,7 +141,10 @@ EOF
 fi
 
 # ---------- 输出信息 ----------
-INFO=$(wget -qO- "https://1.1.1.1/cdn-cgi/trace")
+INFO=$(wget -qO- -T 5 "https://www.cloudflare.com/cdn-cgi/trace")
+if [ -z "${INFO}" ]; then
+    INFO=$(wget -qO- -T 5 "https://1.1.1.1/cdn-cgi/trace")
+fi
 IP=$(echo "${INFO}" | awk -F= '/^ip=/ {print $2}')
 LOC=$(echo "${INFO}" | awk -F= '/^loc=/ {print $2}')
 
