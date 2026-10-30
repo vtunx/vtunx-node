@@ -1,10 +1,6 @@
 # vmesss
 
-Alpine 系统安装（sing-box + cloudflare tunnel）：
-
-```
-wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
-```
+Alpine 系统安装（sing-box + cloudflare tunnel）。
 
 ## 变量
 
@@ -21,6 +17,26 @@ wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
 - **全部不传** → 只部署 vmess（随机端口 + 随机 uuid）
 - **只传一部分** → 报错退出
 
+## 脚本安装（Alpine）
+
+**传参部署（vmess + tunnel）** —— 先 `export` 再执行，管道里的 `sh` 才拿得到变量：
+
+```bash
+export TPORT=11800
+export TUUID=你的uuid
+export THOST=你的域名
+export TTOKEN=你的cloudflare隧道token
+wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
+```
+
+**不传参（仅 vmess，随机端口 + 随机 uuid）**：
+
+```bash
+wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
+```
+
+脚本结束会直接打印节点链接。
+
 ## Docker 部署
 
 镜像：`ghcr.io/clerzg/vmesss:latest`（amd64 / arm64）
@@ -33,6 +49,8 @@ docker run -d --name sing-box --restart unless-stopped \
   -e TTOKEN=你的cloudflare隧道token \
   ghcr.io/clerzg/vmesss:latest
 ```
+
+不传任何 `-e` 即为随机端口 + 随机 uuid 模式。
 
 节点链接（隧道模式）：
 
