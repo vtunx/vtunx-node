@@ -22,7 +22,7 @@ Alpine 系统安装（sing-box + cloudflare tunnel）。
 **传参部署（vmess + tunnel）** —— 先 `export` 再执行，管道里的 `sh` 才拿得到变量：
 
 ```bash
-export TPORT=11800
+export TPORT=你的端口
 export TUUID=你的uuid
 export THOST=你的域名
 export TTOKEN=你的cloudflare隧道token
@@ -43,7 +43,7 @@ wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
 
 ```bash
 docker run -d --name sing-box --restart unless-stopped \
-  -e TPORT=11800 \
+  -e TPORT=你的端口 \
   -e TUUID=你的uuid \
   -e THOST=你的域名 \
   -e TTOKEN=你的cloudflare隧道token \
