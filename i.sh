@@ -58,18 +58,12 @@ echo "下载 sing-box"
 DOWNLOAD_URL="${MY_RELEASE_URL}/sing-box-linux-${SB_ARCH}.tar.xz"
 mkdir -p /usr/local/bin
 
-if wget -qO /tmp/sing-box.tar.xz "${DOWNLOAD_URL}" && \
-   tar -xJf /tmp/sing-box.tar.xz -C /usr/local/bin/ sing-box; then
-    chmod +x ${SB_BIN}
-    rm -f /tmp/sing-box.tar.xz
-else
-    rm -f /tmp/sing-box.tar.xz
-    echo "错误: 无法下载sing-box"
-    exit 1
-fi
+wget -qO- "${DOWNLOAD_URL}" | tar -xJ -C /usr/local/bin/
 
-if [ ! -s ${SB_BIN} ]; then
-    echo "错误: sing-box 二进制缺失"
+if [ $? -eq 0 ] && [ -s ${SB_BIN} ]; then
+    chmod +x ${SB_BIN}
+else
+    echo "错误: 无法下载sing-box"
     exit 1
 fi
 
