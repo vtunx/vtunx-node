@@ -29,4 +29,3 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository }}:1.1.7
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
