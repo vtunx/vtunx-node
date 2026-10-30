@@ -169,7 +169,7 @@ if [ "${MODE}" = "tunnel" ]; then
 #!/sbin/openrc-run
 description="Cloudflare Tunnel Service"
 command="/usr/local/bin/cloudflared"
-command_args="tunnel --no-autoupdate run --token ${TTOKEN}"
+command_args="tunnel --no-autoupdate --loglevel error run --token ${TTOKEN}"
 pidfile="/run/\${RC_SVCNAME}.pid"
 command_background="yes"
 output_log="/var/log/cloudflared.log"
@@ -189,7 +189,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate run --token ${TTOKEN}
+ExecStart=/usr/local/bin/cloudflared tunnel --no-autoupdate --loglevel error run --token ${TTOKEN}
 Restart=always
 RestartSec=5
 

@@ -54,7 +54,7 @@ EOF
 
 # ---------- cloudflare tunnel ----------
 if [ "${MODE}" = "tunnel" ]; then
-    cloudflared tunnel --no-autoupdate run --token "${TTOKEN}" &
+    cloudflared tunnel --no-autoupdate --loglevel error run --token "${TTOKEN}" &
     echo "✔ cloudflared 已启动（回源 ws://127.0.0.1:${PORT}）"
 fi
 
