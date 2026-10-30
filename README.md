@@ -1,4 +1,4 @@
-# vmesss
+# vtunx
 
 Alpine 系统安装（sing-box + cloudflare tunnel）。
 
@@ -26,20 +26,20 @@ export TPORT=你的端口
 export TUUID=你的uuid
 export THOST=你的域名
 export TTOKEN=你的cloudflare隧道token
-wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
+wget -qO- https://github.com/clerzg/vtunx/raw/refs/heads/main/i.sh | sh
 ```
 
 **不传参（仅 vmess，随机端口 + 随机 uuid）**：
 
 ```bash
-wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
+wget -qO- https://github.com/clerzg/vtunx/raw/refs/heads/main/i.sh | sh
 ```
 
 脚本结束会直接打印节点链接。
 
 ## Docker 部署
 
-镜像：`ghcr.io/clerzg/vmesss:latest`（amd64 / arm64）
+镜像：`ghcr.io/clerzg/vtunx:latest`（amd64 / arm64）
 
 ```bash
 docker run -d --name sing-box --restart unless-stopped \
@@ -47,7 +47,7 @@ docker run -d --name sing-box --restart unless-stopped \
   -e TUUID=你的uuid \
   -e THOST=你的域名 \
   -e TTOKEN=你的cloudflare隧道token \
-  ghcr.io/clerzg/vmesss:latest
+  ghcr.io/clerzg/vtunx:latest
 ```
 
 不传任何 `-e` 即为随机端口 + 随机 uuid 模式。

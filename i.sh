@@ -11,7 +11,7 @@ CONFIG_FILE="${CONFIG_PATH}/config.json"
 INIT_FILE="/etc/init.d/sing-box"
 CFD_BIN="/usr/local/bin/cloudflared"
 CFD_INIT_FILE="/etc/init.d/cloudflared"
-MY_RELEASE_URL="https://github.com/clerzg/vmesss/releases/latest/download"
+MY_RELEASE_URL="https://github.com/clerzg/vtunx/releases/latest/download"
 
 # ============ 环境变量 ============
 # TPORT  : vmess 端口
