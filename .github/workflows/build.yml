@@ -60,5 +60,5 @@ jobs:
           draft: false
           prerelease: false
           body: |
-            - **同步官方版本**: `${{ steps.get_tag.outputs.tag }}`
-            - **协议裁剪**: 仅保留 `VLESS` + `WS`
+               - **构建方式**: 官方源码，不启用可选特性（QUIC/WireGuard/uTLS/ACME/Clash API 等）
+               - **体积优化**: -s -w -buildid= 去符号
