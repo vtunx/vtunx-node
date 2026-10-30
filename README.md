@@ -25,6 +25,7 @@ docker run -d --name sing-box --restart unless-stopped \
 | `TPORT` | 是 | vmess 监听端口 |
 | `TUUID` | 是 | vmess uuid |
 | `TTOKEN` | 否 | Cloudflare Tunnel token，不传则只跑 vmess 直连 |
+| `THOST` | 否 | 隧道域名，用于启动时输出节点链接 |
 
 节点链接（隧道模式）：
 

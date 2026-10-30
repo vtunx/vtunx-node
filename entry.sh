@@ -12,6 +12,11 @@ EOF
 if [ -n "${TTOKEN}" ]; then
     cloudflared tunnel --no-autoupdate run --token "${TTOKEN}" &
     echo "cloudflared 已启动（隧道模式，回源 ws://127.0.0.1:${TPORT}）"
+    if [ -n "${THOST}" ]; then
+        echo "节点链接: vmess://${TUUID}@${THOST}:443?type=ws&security=tls#${THOST}"
+    fi
+else
+    echo "未设置 TTOKEN，仅部署 vmess 直连"
 fi
 
 echo "sing-box 监听端口: ${TPORT}"
