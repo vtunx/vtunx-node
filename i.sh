@@ -9,7 +9,7 @@ SB_BIN="/usr/local/bin/sing-box"
 CONFIG_PATH="/etc/sing-box"
 CONFIG_FILE="${CONFIG_PATH}/config.json"
 INIT_FILE="/etc/init.d/sing-box"
-MY_RELEASE_URL="https://github.com/clerzg/vlesss/releases/latest/download"
+MY_RELEASE_URL="https://github.com/clerzg/vmesss/releases/latest/download"
 
 INFO=$(wget -qO- "https://1.1.1.1/cdn-cgi/trace")
 IP=$(echo "${INFO}" | awk -F= '/^ip=/ {print $2}')
