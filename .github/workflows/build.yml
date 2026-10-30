@@ -16,8 +16,18 @@ jobs:
       - name: Get Latest Stable Tag
         id: get_tag
         run: |
-          LATEST_TAG=$(curl -s https://api.github.com/repos/SagerNet/sing-box/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-          echo "tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          set -euo pipefail
+          # 用 git ls-remote 取代 REST API，避免 runner 共享 IP 触发匿名限流(60次/小时)导致取到空 tag
+          LATEST_TAG="$(git ls-remote --tags --refs https://github.com/SagerNet/sing-box.git \
+            | awk -F'/' '{print $NF}' \
+            | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
+            | sort -V | tail -n1 || true)"
+          if [ -z "$LATEST_TAG" ]; then
+            echo "::error::无法获取 sing-box 最新稳定 tag，终止发布"
+            exit 1
+          fi
+          echo "本次构建版本: $LATEST_TAG"
+          echo "tag=$LATEST_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Checkout Source
         uses: actions/checkout@v4
@@ -51,4 +61,4 @@ jobs:
           prerelease: false
           body: |
             - **同步官方版本**: `${{ steps.get_tag.outputs.tag }}`
-            - **协议裁剪**: 仅保留 `VLESS` + `TCP`
+            - **协议裁剪**: 仅保留 `VLESS` + `WS`
