@@ -41,7 +41,7 @@ wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | sh
 
 ## Docker 部署
 
-镜像：`ghcr.io/vtunx/vtunx-node:latest`（amd64 / arm64）
+镜像：`ghcr.io/vtunx/vtunx-node:1.9.7`（amd64 / arm64）
 
 ```bash
 docker run -d --name sing-box --restart unless-stopped \
@@ -49,7 +49,7 @@ docker run -d --name sing-box --restart unless-stopped \
   -e TUUID=你的uuid \
   -e THOST=你的域名 \
   -e TTOKEN=你的cloudflare隧道token \
-  ghcr.io/vtunx/vtunx-node:latest
+  ghcr.io/vtunx/vtunx-node:1.9.7
 ```
 
 不传任何 `-e` 即为随机端口 + 随机 uuid 模式。

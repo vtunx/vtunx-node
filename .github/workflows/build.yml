@@ -47,13 +47,20 @@ jobs:
           VER=$(echo "$V" | sed 's/^v//')
           MAJOR=$(echo "$VER" | cut -d. -f1)
           MINOR=$(echo "$VER" | cut -d. -f2)
-          # 1.9 ~ 1.13 需要 Go 1.21（1.14+ 需要 1.25.x），避免链接错误
-          if [ "$MAJOR" -eq 1 ] && [ "$MINOR" -ge 9 ] && [ "$MINOR" -le 13 ]; then
+          # No-tags builds of 2023-era tags fail on a current toolchain (1.0/1.1/1.2: linker symbols;
+          # 1.9: net.errNoSuchInterface; 1.14+ asked for Go 1.25 in go.mod), and failure modes differ.
+          if [ "$MAJOR" -eq 1 ] && [ "$MINOR" -le 2 ]; then
+            echo "GO=1.20.14" >> "$GITHUB_OUTPUT"
+            echo "Go 1.20.14"
+          elif [ "$MAJOR" -eq 1 ] && [ "$MINOR" -le 9 ]; then
             echo "GO=1.21.13" >> "$GITHUB_OUTPUT"
             echo "Go 1.21.13"
+          elif [ "$MAJOR" -eq 1 ] && [ "$MINOR" -le 13 ]; then
+            echo "GO=1.23" >> "$GITHUB_OUTPUT"
+            echo "Go 1.23"
           else
-            echo "GO=stable" >> "$GITHUB_OUTPUT"
-            echo "Go stable"
+            echo "GO=1.25.5" >> "$GITHUB_OUTPUT"
+            echo "Go 1.25.5"
           fi
           echo "golinux=$VER" >> "$GITHUB_OUTPUT"
 
