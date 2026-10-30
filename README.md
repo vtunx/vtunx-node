@@ -1,6 +1,8 @@
 # vtunx
 
-Alpine 系统安装（sing-box + cloudflare tunnel）。
+一键安装 sing-box（vmess + ws），可选挂 Cloudflare Tunnel。
+
+支持 **Alpine / Debian / Ubuntu**，自动识别 init 系统（Alpine 用 openrc，Debian/Ubuntu 用 systemd）。
 
 ## 变量
 
@@ -17,7 +19,7 @@ Alpine 系统安装（sing-box + cloudflare tunnel）。
 - **全部不传** → 只部署 vmess（随机端口 + 随机 uuid）
 - **只传一部分** → 报错退出
 
-## 脚本安装（Alpine）
+## 脚本安装（Alpine / Debian / Ubuntu）
 
 **传参部署（vmess + tunnel）** —— 先 `export` 再执行，管道里的 `sh` 才拿得到变量：
 
