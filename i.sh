@@ -51,7 +51,7 @@ if [ -n "${TPORT}" ] && [ -n "${TUUID}" ] && [ -n "${THOST}" ] && [ -n "${TTOKEN
     UUID="${TUUID}"
     HOST="${THOST}"
     echo "✔ 已传入全部变量，启用 vmess + cloudflare tunnel"
-else
+elif [ -z "${TPORT}" ] && [ -z "${TUUID}" ] && [ -z "${THOST}" ] && [ -z "${TTOKEN}" ]; then
     MODE="vmess"
     # 随机端口
     PORT=$(awk 'BEGIN{srand(); print int(rand()*50000)+10000}')
@@ -70,7 +70,16 @@ else
         }')
     fi
     HOST="gw.alicdn.com"
-    echo "✔ 未传入完整变量，仅部署 vmess（随机端口/uuid）"
+    echo "✔ 未传入任何变量，仅部署 vmess（随机端口/uuid）"
+else
+    GOT=""
+    if [ -n "${TPORT}" ]; then GOT="${GOT} TPORT"; fi
+    if [ -n "${TUUID}" ]; then GOT="${GOT} TUUID"; fi
+    if [ -n "${THOST}" ]; then GOT="${GOT} THOST"; fi
+    if [ -n "${TTOKEN}" ]; then GOT="${GOT} TTOKEN"; fi
+    echo "❌ 错误：TPORT / TUUID / THOST / TTOKEN 必须全部传入，或全部不传" >&2
+    echo "   当前已传入:${GOT}" >&2
+    exit 1
 fi
 
 # ---------- sing-box 配置 ----------

@@ -1,4 +1,25 @@
+# vmesss
 
+Alpine 系统安装（sing-box + cloudflare tunnel）：
+
+```
+wget -qO- https://github.com/clerzg/vmesss/raw/refs/heads/main/i.sh | sh
+```
+
+## 变量
+
+| 变量 | 说明 |
+|---|---|
+| `TPORT` | vmess 端口 |
+| `TUUID` | vmess uuid |
+| `THOST` | vmess host（隧道域名） |
+| `TTOKEN` | Cloudflare Tunnel token |
+
+规则：
+
+- **4 个全传** → 部署 vmess + cloudflare tunnel
+- **全部不传** → 只部署 vmess（随机端口 + 随机 uuid）
+- **只传一部分** → 报错退出
 
 ## Docker 部署
 
@@ -8,16 +29,10 @@
 docker run -d --name sing-box --restart unless-stopped \
   -e TPORT=11800 \
   -e TUUID=你的uuid \
+  -e THOST=你的域名 \
   -e TTOKEN=你的cloudflare隧道token \
   ghcr.io/clerzg/vmesss:latest
 ```
-
-| 变量 | 必填 | 说明 |
-|---|---|---|
-| `TPORT` | 是 | vmess 监听端口 |
-| `TUUID` | 是 | vmess uuid |
-| `TTOKEN` | 否 | Cloudflare Tunnel token，不传则只跑 vmess 直连 |
-| `THOST` | 否 | 隧道域名，用于启动时输出节点链接 |
 
 节点链接（隧道模式）：
 
