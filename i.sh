@@ -233,7 +233,7 @@ echo "端口: ${PORT}"
 echo "UUID: ${UUID}"
 echo "Host: ${HOST}"
 if [ "${MODE}" = "tunnel" ]; then
-    echo "Tunnel: 已启用（cloudflared，回源 ws://127.0.0.1:${PORT}）"
+    echo "Tunnel: 已启用（cloudflared，回源 http://localhost:${PORT}）"
 fi
 echo ""
 echo "查看状态: ${ST_CMD}"
