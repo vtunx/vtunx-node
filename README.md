@@ -21,9 +21,9 @@ wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | TPORT='
 
 # 仅 vmess（随机端口/uuid）
 wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | sh
+# 卸载
+wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/uninstall.sh | sh
 ```
-
-执行完直接打印节点链接。
 
 ## Docker
 
