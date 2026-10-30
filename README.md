@@ -21,15 +21,13 @@
 
 ## 脚本安装（Alpine / Debian / Ubuntu）
 
-**传参部署（vmess + tunnel）** —— 先 `export` 再执行，管道里的 `sh` 才拿得到变量：
+**传参部署（vmess + tunnel）** —— 单行，变量放管道右侧 `sh` 的前缀，`sh` 进程环境即可读到：
 
 ```bash
-export TPORT=你的端口
-export TUUID=你的uuid
-export THOST=你的域名
-export TTOKEN=你的cloudflare隧道token
-wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | sh
+wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | TPORT=你的端口 TUUID=你的uuid THOST=你的域名 TTOKEN=你的cloudflare隧道token sh
 ```
+
+> 变量前缀形式 `VAR=x cmd` 只作用于 `cmd` 这一个进程，管道右侧恰好就是 `sh`，所以脚本里 `$TPORT` 等能直接读到，无需 `export`。
 
 **不传参（仅 vmess，随机端口 + 随机 uuid）**：
 
