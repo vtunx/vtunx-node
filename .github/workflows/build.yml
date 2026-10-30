@@ -39,6 +39,24 @@ jobs:
           fi
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
+      - name: Select Go Toolchain
+        id: go_ver
+        run: |
+          set -euo pipefail
+          V="${{ steps.get_tag.outputs.tag }}"
+          VER=$(echo "$V" | sed 's/^v//')
+          MAJOR=$(echo "$VER" | cut -d. -f1)
+          MINOR=$(echo "$VER" | cut -d. -f2)
+          # 1.9 ~ 1.13 需要 Go 1.21（1.14+ 需要 1.25.x），避免链接错误
+          if [ "$MAJOR" -eq 1 ] && [ "$MINOR" -ge 9 ] && [ "$MINOR" -le 13 ]; then
+            echo "GO=1.21.13" >> "$GITHUB_OUTPUT"
+            echo "Go 1.21.13"
+          else
+            echo "GO=stable" >> "$GITHUB_OUTPUT"
+            echo "Go stable"
+          fi
+          echo "golinux=$VER" >> "$GITHUB_OUTPUT"
+
       - name: Checkout Source
         uses: actions/checkout@v4
         with:
@@ -48,7 +66,7 @@ jobs:
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: 'stable'
+          go-version: ${{ steps.go_ver.outputs.GO }}
 
       - name: Build and Optimize
         run: |
