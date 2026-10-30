@@ -21,13 +21,11 @@
 
 ## 脚本安装（Alpine / Debian / Ubuntu）
 
-**传参部署（vmess + tunnel）** —— 单行，变量放管道右侧 `sh` 的前缀，`sh` 进程环境即可读到：
+**传参部署（vmess + tunnel）** —— 单行：
 
 ```bash
 wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | TPORT='你的端口' TUUID='你的uuid' THOST='你的域名' TTOKEN='你的cloudflare隧道token' sh
 ```
-
-> 变量前缀形式 `VAR=x cmd` 只作用于 `cmd` 这一个进程，管道右侧恰好就是 `sh`，所以脚本里 `$TPORT` 等能直接读到，无需 `export`。值统一用单引号包裹最保险（尤其 token，防特殊字符被 shell 解析）。
 
 **不传参（仅 vmess，随机端口 + 随机 uuid）**：
 
