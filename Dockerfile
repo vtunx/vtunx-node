@@ -10,7 +10,7 @@ RUN set -eux; \
       *) echo "unsupported arch: ${TARGETARCH}" >&2; exit 1 ;; \
     esac; \
     wget -qO /tmp/sb.tar.xz \
-      "https://github.com/vtunx/vtunx-node/releases/latest/download/sing-box-linux-${A}.tar.xz"; \
+      "https://github.com/vtunx/vtunx-node/releases/download/v1.9.7/sing-box-linux-${A}.tar.xz"; \
     tar -xJf /tmp/sb.tar.xz -C /usr/local/bin/ sing-box; \
     chmod +x /usr/local/bin/sing-box; \
     wget -qO /usr/local/bin/cloudflared \

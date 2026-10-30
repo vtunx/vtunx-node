@@ -14,7 +14,8 @@ SB_BIN="/usr/local/bin/sing-box"
 CONFIG_PATH="/etc/sing-box"
 CONFIG_FILE="${CONFIG_PATH}/config.json"
 CFD_BIN="/usr/local/bin/cloudflared"
-MY_RELEASE_URL="https://github.com/vtunx/vtunx-node/releases/latest/download"
+# sing-box 版本号已固定为 1.9.7（每次重新适配请手动更新此值）
+MY_RELEASE_URL="https://github.com/vtunx/vtunx-node/releases/download/v1.9.7"
 
 if [ "${INIT}" = "openrc" ]; then
     SB_INIT_FILE="/etc/init.d/sing-box"

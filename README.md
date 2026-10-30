@@ -62,5 +62,6 @@ vmess://<UUID>@<你的域名>:443?type=ws&security=tls#节点名
 
 说明：
 - 容器内已内置 sing-box 与 cloudflared，启动不联网下载
+- sing-box 版本号已固定为 **1.9.7**（修改 `Dockerfile`/`i.sh` 中的标签才能升级）
 - 隧道模式回源 `http://localhost:<TPORT>`，端口在容器内独立，不与宿主冲突
 - 开机自启由 `--restart unless-stopped` 负责，不需要 openrc
