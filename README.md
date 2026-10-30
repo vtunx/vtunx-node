@@ -1,8 +1,6 @@
 # vtunx
 
-一键安装 sing-box（vmess + ws），可选挂 Cloudflare Tunnel。
-
-支持 **Alpine / Debian / Ubuntu**，自动识别 init 系统（Alpine 用 openrc，Debian/Ubuntu 用 systemd）。
+一键部署 sing-box（vmess + ws），可选挂 Cloudflare Tunnel。支持 Alpine / Debian / Ubuntu。
 
 ## 变量
 
@@ -10,54 +8,32 @@
 |---|---|
 | `TPORT` | vmess 端口 |
 | `TUUID` | vmess uuid |
-| `THOST` | vmess host（隧道域名） |
+| `THOST` | 隧道域名 |
 | `TTOKEN` | Cloudflare Tunnel token |
 
-规则：
+规则：**4 个全传** → vmess + tunnel；**全不传** → 仅 vmess（随机端口/uuid）；**只传部分** → 报错。
 
-- **4 个全传** → 部署 vmess + cloudflare tunnel
-- **全部不传** → 只部署 vmess（随机端口 + 随机 uuid）
-- **只传一部分** → 报错退出
-
-## 脚本安装（Alpine / Debian / Ubuntu）
-
-**传参部署（vmess + tunnel）** —— 单行：
+## 脚本安装
 
 ```bash
-wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | TPORT='你的端口' TUUID='你的uuid' THOST='你的域名' TTOKEN='你的cloudflare隧道token' sh
-```
+# vmess + tunnel
+wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | TPORT='你的端口' TUUID='你的uuid' THOST='你的域名' TTOKEN='你的token' sh
 
-**不传参（仅 vmess，随机端口 + 随机 uuid）**：
-
-```bash
+# 仅 vmess（随机端口/uuid）
 wget -qO- https://github.com/vtunx/vtunx-node/raw/refs/heads/main/i.sh | sh
 ```
 
-脚本结束会直接打印节点链接。
+执行完直接打印节点链接。
 
-## Docker 部署
-
-镜像：`ghcr.io/vtunx/vtunx-node:1.9.7`（amd64 / arm64）
+## Docker
 
 ```bash
-docker run -d --name sing-box --restart unless-stopped \
-  -e TPORT=你的端口 \
-  -e TUUID=你的uuid \
-  -e THOST=你的域名 \
-  -e TTOKEN=你的cloudflare隧道token \
+docker run -d --restart unless-stopped \
+  -e TPORT=你的端口 -e TUUID=你的uuid \
+  -e THOST=你的域名 -e TTOKEN=你的token \
   ghcr.io/vtunx/vtunx-node:1.9.7
 ```
 
-不传任何 `-e` 即为随机端口 + 随机 uuid 模式。
+不传 `-e` 即随机端口/uuid 模式。隧道节点链接：`vmess://<UUID>@<你的域名>:443?type=ws&security=tls#节点名`。
 
-节点链接（隧道模式）：
-
-```
-vmess://<UUID>@<你的域名>:443?type=ws&security=tls#节点名
-```
-
-说明：
-- 容器内已内置 sing-box 与 cloudflared，启动不联网下载
-- sing-box 版本号已固定为 **1.9.7**（修改 `Dockerfile`/`i.sh` 中的标签才能升级）
-- 隧道模式回源 `http://localhost:<TPORT>`，端口在容器内独立，不与宿主冲突
-- 开机自启由 `--restart unless-stopped` 负责，不需要 openrc
+内置 sing-box 1.9.7 与 cloudflared，启动不联网下载；版本升级需改 `Dockerfile`/`i.sh` 中的标签。
