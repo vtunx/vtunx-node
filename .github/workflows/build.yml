@@ -2,11 +2,6 @@ name: Build and Release Sing-box Minimal
 
 on:
   workflow_dispatch:
-    inputs:
-      SINGBOX_VERSION:
-        description: 'sing-box 版本号（留空 = 最新稳定版）'
-        required: false
-        default: ''
 
 jobs:
   build:
@@ -18,62 +13,17 @@ jobs:
       matrix:
         goarch: [amd64, arm64]
     steps:
-      - name: Get Stable Tag
-        id: get_tag
-        run: |
-          set -euo pipefail
-          if [ -n "${{ github.event.inputs.SINGBOX_VERSION }}" ]; then
-            TAG="${{ github.event.inputs.SINGBOX_VERSION }}"
-            echo "本次构建版本: $TAG"
-          else
-            # 用 git ls-remote 取代 REST API，避免 runner 共享 IP 触发匿名限流(60次/小时)导致取到空 tag
-            TAG="$(git ls-remote --tags --refs https://github.com/SagerNet/sing-box.git \
-              | awk -F'/' '{print $NF}' \
-              | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
-              | sort -V | tail -n1)"
-            if [ -z "$TAG" ]; then
-              echo "::error::无法获取 sing-box 最新稳定 tag，终止发布"
-              exit 1
-            fi
-            echo "本次构建版本: $TAG"
-          fi
-          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
-
-      - name: Select Go Toolchain
-        id: go_ver
-        run: |
-          set -euo pipefail
-          V="${{ steps.get_tag.outputs.tag }}"
-          VER=$(echo "$V" | sed 's/^v//')
-          MAJOR=$(echo "$VER" | cut -d. -f1)
-          MINOR=$(echo "$VER" | cut -d. -f2)
-          # No-tags builds of 2023-era tags fail on a current toolchain (1.0/1.1/1.2: linker symbols;
-          # 1.9: net.errNoSuchInterface; 1.14+ asked for Go 1.25 in go.mod), and failure modes differ.
-          if [ "$MAJOR" -eq 1 ] && [ "$MINOR" -le 2 ]; then
-            echo "GO=1.20.14" >> "$GITHUB_OUTPUT"
-            echo "Go 1.20.14"
-          elif [ "$MAJOR" -eq 1 ] && [ "$MINOR" -le 9 ]; then
-            echo "GO=1.21.13" >> "$GITHUB_OUTPUT"
-            echo "Go 1.21.13"
-          elif [ "$MAJOR" -eq 1 ] && [ "$MINOR" -le 13 ]; then
-            echo "GO=1.23" >> "$GITHUB_OUTPUT"
-            echo "Go 1.23"
-          else
-            echo "GO=1.25.5" >> "$GITHUB_OUTPUT"
-            echo "Go 1.25.5"
-          fi
-          echo "golinux=$VER" >> "$GITHUB_OUTPUT"
-
       - name: Checkout Source
         uses: actions/checkout@v4
         with:
           repository: SagerNet/sing-box
-          ref: ${{ steps.get_tag.outputs.tag }}
+          ref: v1.9.7
 
       - name: Setup Go
         uses: actions/setup-go@v5
         with:
-          go-version: ${{ steps.go_ver.outputs.GO }}
+          # 1.9.7 用新 Go 链接会报 net.errNoSuchInterface，必须固定 1.21
+          go-version: '1.21.13'
 
       - name: Build and Optimize
         run: |
@@ -90,7 +40,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.get_tag.outputs.tag }}
+          tag_name: v1.9.7
           files: sing-box-linux-${{ matrix.goarch }}.tar.xz
           draft: false
           prerelease: false
