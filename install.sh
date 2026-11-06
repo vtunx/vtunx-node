@@ -110,7 +110,7 @@ fi
 mkdir -p ${CONFIG_PATH}
 
 cat <<EOF > ${CONFIG_FILE}
-{"log":{"disabled":true},"inbounds":[{"type":"vmess","listen":"::","listen_port":${PORT},"users":[{"uuid":"${UUID}"}],"transport":{"type":"ws"}}],"outbounds":[{"type":"direct"}]}
+{"log":{"disabled":true},"inbounds":[{"type":"vmess","listen":"::","listen_port":${PORT},"users":[{"uuid":"${UUID}"}],"transport":{"type":"ws"}}],"outbounds":[{"type":"direct","domain_strategy":"prefer_ipv6"}]}
 EOF
 
 # ---------- sing-box 服务 ----------

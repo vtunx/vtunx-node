@@ -49,7 +49,7 @@ fi
 # ---------- sing-box 配置 ----------
 mkdir -p /etc/sing-box
 cat > /etc/sing-box/config.json <<EOF
-{"log":{"disabled":true},"inbounds":[{"type":"vmess","listen":"::","listen_port":${PORT},"users":[{"uuid":"${UUID}"}],"transport":{"type":"ws"}}],"outbounds":[{"type":"direct"}]}
+{"log":{"disabled":true},"inbounds":[{"type":"vmess","listen":"::","listen_port":${PORT},"users":[{"uuid":"${UUID}"}],"transport":{"type":"ws"}}],"outbounds":[{"type":"direct","domain_strategy":"prefer_ipv6"}]}
 EOF
 
 # ---------- cloudflare tunnel ----------
